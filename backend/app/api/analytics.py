@@ -177,9 +177,7 @@ def get_usage_statistics(
     return analytics.get_usage_statistics(target_user_id, start_date, end_date)
 
 
-@router.get(
-    "/performance/statistics", response_model=schemas.PerformanceStatistics
-)
+@router.get("/performance/statistics", response_model=schemas.PerformanceStatistics)
 @limiter.limit("60/minute")
 def get_performance_statistics(
     request: Request,

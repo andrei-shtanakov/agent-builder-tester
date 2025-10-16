@@ -70,3 +70,19 @@ class Agent(AgentBase):
     versions: list[AgentVersion] = []
 
     model_config = {"from_attributes": True}
+
+
+class AgentTestRequest(BaseModel):
+    """Agent test request schema."""
+
+    test_input: str = Field(..., description="Test input message")
+
+
+class AgentTestResponse(BaseModel):
+    """Agent test response schema."""
+
+    success: bool = Field(..., description="Test success status")
+    response: str | None = Field(None, description="Test response")
+    error: str | None = Field(None, description="Error message if failed")
+    config_valid: bool | None = Field(None, description="Config validation status")
+    system_message_length: int | None = Field(None, description="System message length")

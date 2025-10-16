@@ -134,9 +134,7 @@ def list_participants(
     return group_chat_service.list_participants(db, group_chat_id)
 
 
-@router.get(
-    "/{group_chat_id}/messages", response_model=list[schemas.Message]
-)
+@router.get("/{group_chat_id}/messages", response_model=list[schemas.Message])
 def list_group_chat_messages(
     group_chat_id: UUID, db: Session = Depends(get_db)
 ) -> list[schemas.Message]:

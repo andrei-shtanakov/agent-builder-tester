@@ -207,9 +207,7 @@ def list_participants(
     )
 
 
-def list_group_chat_messages(
-    db: Session, group_chat_id: UUID
-) -> list[models.Message]:
+def list_group_chat_messages(db: Session, group_chat_id: UUID) -> list[models.Message]:
     """
     List all messages for conversations linked to a group chat.
 

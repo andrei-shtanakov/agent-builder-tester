@@ -3,9 +3,16 @@
 from backend.app.schemas.agent import (
     Agent,
     AgentCreate,
+    AgentTestRequest,
+    AgentTestResponse,
     AgentUpdate,
     AgentVersion,
     AgentVersionCreate,
+)
+from backend.app.schemas.agent_template import (
+    AgentTemplate,
+    AgentTemplateCreate,
+    AgentTemplateUpdate,
 )
 from backend.app.schemas.analytics import (
     AggregatedMetricResponse,
@@ -57,6 +64,11 @@ from backend.app.schemas.user import (
 __all__ = [
     "Agent",
     "AgentCreate",
+    "AgentTemplate",
+    "AgentTemplateCreate",
+    "AgentTemplateUpdate",
+    "AgentTestRequest",
+    "AgentTestResponse",
     "AgentUpdate",
     "AgentVersion",
     "AgentVersionCreate",

@@ -223,6 +223,8 @@ def ensure_default_user(db: Session) -> models.User:
     db.commit()
     db.refresh(created)
     return created
+
+
 DEFAULT_GUEST_USERNAME = "guest"
 DEFAULT_GUEST_EMAIL = "guest@example.com"
 DEFAULT_GUEST_PASSWORD = "GuestPass!123"

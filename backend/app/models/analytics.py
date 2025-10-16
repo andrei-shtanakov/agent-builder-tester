@@ -129,7 +129,10 @@ class AggregatedMetric(Base):
     # Composite indexes
     __table_args__ = (
         Index(
-            "idx_agg_user_period_timestamp", "user_id", "aggregation_period", "period_start"
+            "idx_agg_user_period_timestamp",
+            "user_id",
+            "aggregation_period",
+            "period_start",
         ),
         Index(
             "idx_agg_agent_period_timestamp",
@@ -166,9 +169,7 @@ class UsageQuota(Base):
     quota_type: Mapped[str] = mapped_column(
         String(50), nullable=False
     )  # 'api_calls', 'tokens', 'cost'
-    limit: Mapped[float] = mapped_column(
-        Float, nullable=False
-    )  # Maximum allowed value
+    limit: Mapped[float] = mapped_column(Float, nullable=False)  # Maximum allowed value
     used: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)  # Current
     reset_period: Mapped[str] = mapped_column(
         String(20), nullable=False

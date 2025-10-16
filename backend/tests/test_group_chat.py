@@ -36,8 +36,8 @@ def sample_agents(db_session: Session) -> list[models.Agent]:
     agents = []
     for i in range(3):
         agent = models.Agent(
-            name=f"Test Agent {i+1}",
-            description=f"Test agent {i+1} description",
+            name=f"Test Agent {i + 1}",
+            description=f"Test agent {i + 1} description",
             type="assistant",
             status="active",
         )
@@ -48,7 +48,7 @@ def sample_agents(db_session: Session) -> list[models.Agent]:
             agent_id=agent.id,
             version="1.0.0",
             config={
-                "system_message": f"You are test agent {i+1}",
+                "system_message": f"You are test agent {i + 1}",
                 "model": "gpt-4",
             },
             is_current=True,
@@ -356,8 +356,7 @@ def test_api_remove_participant(
 ) -> None:
     """Test removing participant via API."""
     response = api_client.delete(
-        f"/api/group-chats/{sample_group_chat.id}/participants/"
-        f"{sample_agents[0].id}"
+        f"/api/group-chats/{sample_group_chat.id}/participants/{sample_agents[0].id}"
     )
     assert response.status_code == 204
 
@@ -366,9 +365,7 @@ def test_api_list_participants(
     api_client: TestClient, sample_group_chat: models.GroupChat
 ) -> None:
     """Test listing participants via API."""
-    response = api_client.get(
-        f"/api/group-chats/{sample_group_chat.id}/participants"
-    )
+    response = api_client.get(f"/api/group-chats/{sample_group_chat.id}/participants")
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, list)

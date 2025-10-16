@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCurrentUser } from "./api/auth";
 import { AgentInteractionsPage } from "./pages/AgentInteractionsPage";
+import { AgentManagementPage } from "./pages/AgentManagementPage";
 import { AnalyticsDashboardPage } from "./pages/AnalyticsDashboardPage";
 import { ChatPage } from "./pages/ChatPage";
 import { FALLBACK_USER, useAuthStore } from "./store/authStore";
 
-type AppView = "chat" | "interactions" | "analytics";
+type AppView = "chat" | "agents" | "interactions" | "analytics";
 
 const parseErrorMessage = (error: unknown): string => {
   if (error instanceof Error) {
@@ -65,6 +66,8 @@ function App(): JSX.Element {
     switch (view) {
       case "chat":
         return <ChatPage />;
+      case "agents":
+        return <AgentManagementPage />;
       case "analytics":
         return <AnalyticsDashboardPage />;
       default:
@@ -109,6 +112,17 @@ function App(): JSX.Element {
           onClick={() => setView("chat")}
         >
           Chat Sessions
+        </button>
+        <button
+          type="button"
+          className={
+            view === "agents"
+              ? "app-shell__nav-btn app-shell__nav-btn--active"
+              : "app-shell__nav-btn"
+          }
+          onClick={() => setView("agents")}
+        >
+          Agent Management
         </button>
         <button
           type="button"
