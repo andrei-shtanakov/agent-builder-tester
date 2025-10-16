@@ -69,3 +69,40 @@ def delete_agent(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Agent not found"
         )
+
+
+@router.post(
+    "/{agent_id}/versions",
+    response_model=schemas.AgentVersion,
+    status_code=status.HTTP_201_CREATED,
+)
+@limiter.limit("10/minute")
+def create_agent_version(
+    request: Request,
+    agent_id: UUID,
+    version_data: schemas.AgentVersionCreate,
+    db: Session = Depends(get_db),
+) -> models.AgentVersion:
+    """Create a new version for an agent."""
+    version = agent_service.create_agent_version(db, agent_id, version_data)
+    if not version:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Agent not found"
+        )
+    return version
+
+
+@router.post(
+    "/{agent_id}/test",
+    response_model=schemas.AgentTestResponse,
+)
+@limiter.limit("5/minute")
+def test_agent(
+    request: Request,
+    agent_id: UUID,
+    test_data: schemas.AgentTestRequest,
+    db: Session = Depends(get_db),
+) -> schemas.AgentTestResponse:
+    """Test an agent with sample input."""
+    result = agent_service.test_agent(db, agent_id, test_data.test_input)
+    return schemas.AgentTestResponse(**result)

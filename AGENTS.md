@@ -75,6 +75,8 @@ This document contains critical information about working with this codebase. Fo
 - Create a detailed message of what changed. Focus on the high level description of
   the problem it tries to solve, and how it is solved. Don't go into the specifics of the
   code unless it adds clarity.
+- If it needs, write short testing instruction.
+- Add changelog. 
 
 ## Git Workflow
 

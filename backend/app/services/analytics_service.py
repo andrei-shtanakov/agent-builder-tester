@@ -150,9 +150,7 @@ class AnalyticsService:
             func.min(MetricEvent.value).label("min"),
             func.max(MetricEvent.value).label("max"),
         ).where(
-            and_(
-                MetricEvent.timestamp >= start_date, MetricEvent.timestamp < end_date
-            )
+            and_(MetricEvent.timestamp >= start_date, MetricEvent.timestamp < end_date)
         )
 
         if user_id:
@@ -198,71 +196,54 @@ class AnalyticsService:
     ) -> UsageStatistics:
         """Get comprehensive usage statistics for a user."""
         # Get API call count
-        api_calls_stmt = (
-            select(func.count(MetricEvent.id))
-            .where(
-                and_(
-                    MetricEvent.user_id == user_id,
-                    MetricEvent.metric_type == "api_call",
-                    MetricEvent.timestamp >= start_date,
-                    MetricEvent.timestamp < end_date,
-                )
+        api_calls_stmt = select(func.count(MetricEvent.id)).where(
+            and_(
+                MetricEvent.user_id == user_id,
+                MetricEvent.metric_type == "api_call",
+                MetricEvent.timestamp >= start_date,
+                MetricEvent.timestamp < end_date,
             )
         )
         total_api_calls = self.db.execute(api_calls_stmt).scalar() or 0
 
         # Get total tokens
-        tokens_stmt = (
-            select(func.sum(MetricEvent.value))
-            .where(
-                and_(
-                    MetricEvent.user_id == user_id,
-                    MetricEvent.metric_type == "token_usage",
-                    MetricEvent.timestamp >= start_date,
-                    MetricEvent.timestamp < end_date,
-                )
+        tokens_stmt = select(func.sum(MetricEvent.value)).where(
+            and_(
+                MetricEvent.user_id == user_id,
+                MetricEvent.metric_type == "token_usage",
+                MetricEvent.timestamp >= start_date,
+                MetricEvent.timestamp < end_date,
             )
         )
         total_tokens = self.db.execute(tokens_stmt).scalar() or 0
 
         # Get total cost
-        cost_stmt = (
-            select(func.sum(MetricEvent.value))
-            .where(
-                and_(
-                    MetricEvent.user_id == user_id,
-                    MetricEvent.metric_type == "cost",
-                    MetricEvent.timestamp >= start_date,
-                    MetricEvent.timestamp < end_date,
-                )
+        cost_stmt = select(func.sum(MetricEvent.value)).where(
+            and_(
+                MetricEvent.user_id == user_id,
+                MetricEvent.metric_type == "cost",
+                MetricEvent.timestamp >= start_date,
+                MetricEvent.timestamp < end_date,
             )
         )
         total_cost = self.db.execute(cost_stmt).scalar() or 0.0
 
         # Get average response time
-        latency_stmt = (
-            select(func.avg(PerformanceMetric.duration_ms))
-            .where(
-                and_(
-                    PerformanceMetric.timestamp >= start_date,
-                    PerformanceMetric.timestamp < end_date,
-                )
+        latency_stmt = select(func.avg(PerformanceMetric.duration_ms)).where(
+            and_(
+                PerformanceMetric.timestamp >= start_date,
+                PerformanceMetric.timestamp < end_date,
             )
         )
         avg_response_time = self.db.execute(latency_stmt).scalar() or 0.0
 
         # Get error rate
-        error_stmt = (
-            select(
-                func.count(PerformanceMetric.id).filter(
-                    PerformanceMetric.status == "error"
-                )
-            )
-            .where(
-                and_(
-                    PerformanceMetric.timestamp >= start_date,
-                    PerformanceMetric.timestamp < end_date,
-                )
+        error_stmt = select(
+            func.count(PerformanceMetric.id).filter(PerformanceMetric.status == "error")
+        ).where(
+            and_(
+                PerformanceMetric.timestamp >= start_date,
+                PerformanceMetric.timestamp < end_date,
             )
         )
         error_count = self.db.execute(error_stmt).scalar() or 0
@@ -346,7 +327,11 @@ class AnalyticsService:
         )
 
     def get_cost_breakdown(
-        self, entity_type: str, entity_id: UUID, start_date: datetime, end_date: datetime
+        self,
+        entity_type: str,
+        entity_id: UUID,
+        start_date: datetime,
+        end_date: datetime,
     ) -> CostBreakdown:
         """Get cost breakdown for an agent or conversation."""
         filter_col = (
@@ -356,43 +341,34 @@ class AnalyticsService:
         )
 
         # Get total cost
-        cost_stmt = (
-            select(func.sum(MetricEvent.value))
-            .where(
-                and_(
-                    filter_col == entity_id,
-                    MetricEvent.metric_type == "cost",
-                    MetricEvent.timestamp >= start_date,
-                    MetricEvent.timestamp < end_date,
-                )
+        cost_stmt = select(func.sum(MetricEvent.value)).where(
+            and_(
+                filter_col == entity_id,
+                MetricEvent.metric_type == "cost",
+                MetricEvent.timestamp >= start_date,
+                MetricEvent.timestamp < end_date,
             )
         )
         total_cost = self.db.execute(cost_stmt).scalar() or 0.0
 
         # Get total tokens
-        tokens_stmt = (
-            select(func.sum(MetricEvent.value))
-            .where(
-                and_(
-                    filter_col == entity_id,
-                    MetricEvent.metric_type == "token_usage",
-                    MetricEvent.timestamp >= start_date,
-                    MetricEvent.timestamp < end_date,
-                )
+        tokens_stmt = select(func.sum(MetricEvent.value)).where(
+            and_(
+                filter_col == entity_id,
+                MetricEvent.metric_type == "token_usage",
+                MetricEvent.timestamp >= start_date,
+                MetricEvent.timestamp < end_date,
             )
         )
         total_tokens = self.db.execute(tokens_stmt).scalar() or 0
 
         # Get API calls
-        api_calls_stmt = (
-            select(func.count(MetricEvent.id))
-            .where(
-                and_(
-                    filter_col == entity_id,
-                    MetricEvent.metric_type == "api_call",
-                    MetricEvent.timestamp >= start_date,
-                    MetricEvent.timestamp < end_date,
-                )
+        api_calls_stmt = select(func.count(MetricEvent.id)).where(
+            and_(
+                filter_col == entity_id,
+                MetricEvent.metric_type == "api_call",
+                MetricEvent.timestamp >= start_date,
+                MetricEvent.timestamp < end_date,
             )
         )
         api_calls = self.db.execute(api_calls_stmt).scalar() or 0

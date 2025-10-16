@@ -1,6 +1,7 @@
 """Database models."""
 
 from backend.app.models.agent import Agent, AgentVersion
+from backend.app.models.agent_template import AgentTemplate
 from backend.app.models.analytics import (
     AggregatedMetric,
     MetricEvent,
@@ -19,6 +20,7 @@ from backend.app.models.user import User
 
 __all__ = [
     "Agent",
+    "AgentTemplate",
     "AgentVersion",
     "AggregatedMetric",
     "Conversation",

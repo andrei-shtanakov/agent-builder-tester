@@ -47,7 +47,10 @@ def upgrade() -> None:
     )
     op.create_index(op.f("ix_metric_events_id"), "metric_events", ["id"], unique=False)
     op.create_index(
-        "idx_metric_user_timestamp", "metric_events", ["user_id", "timestamp"], unique=False
+        "idx_metric_user_timestamp",
+        "metric_events",
+        ["user_id", "timestamp"],
+        unique=False,
     )
     op.create_index(
         "idx_metric_agent_timestamp",
@@ -107,7 +110,9 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["user_id"], ["users.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(op.f("ix_aggregated_metrics_id"), "aggregated_metrics", ["id"], unique=False)
+    op.create_index(
+        op.f("ix_aggregated_metrics_id"), "aggregated_metrics", ["id"], unique=False
+    )
     op.create_index(
         "idx_agg_user_period_timestamp",
         "aggregated_metrics",
@@ -185,7 +190,9 @@ def upgrade() -> None:
         ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(op.f("ix_performance_metrics_id"), "performance_metrics", ["id"], unique=False)
+    op.create_index(
+        op.f("ix_performance_metrics_id"), "performance_metrics", ["id"], unique=False
+    )
     op.create_index(
         "idx_perf_operation_timestamp",
         "performance_metrics",

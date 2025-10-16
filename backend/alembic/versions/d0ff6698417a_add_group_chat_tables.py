@@ -5,6 +5,7 @@ Revises: 627fe3ff9cdf
 Create Date: 2025-10-14 06:15:19.428014
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -12,8 +13,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'd0ff6698417a'
-down_revision: Union[str, Sequence[str], None] = '627fe3ff9cdf'
+revision: str = "d0ff6698417a"
+down_revision: Union[str, Sequence[str], None] = "627fe3ff9cdf"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -122,8 +123,12 @@ def upgrade() -> None:
             nullable=False,
             server_default=sa.text("(CURRENT_TIMESTAMP)"),
         ),
-        sa.ForeignKeyConstraint(["conversation_id"], ["conversations.id"], ondelete="CASCADE"),
-        sa.ForeignKeyConstraint(["group_chat_id"], ["group_chats.id"], ondelete="CASCADE"),
+        sa.ForeignKeyConstraint(
+            ["conversation_id"], ["conversations.id"], ondelete="CASCADE"
+        ),
+        sa.ForeignKeyConstraint(
+            ["group_chat_id"], ["group_chats.id"], ondelete="CASCADE"
+        ),
         sa.ForeignKeyConstraint(
             ["current_speaker_agent_id"], ["agents.id"], ondelete="SET NULL"
         ),

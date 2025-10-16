@@ -39,6 +39,53 @@ export interface Agent {
   versions: AgentVersion[];
 }
 
+export interface AgentCreate {
+  name: string;
+  description?: string | null;
+  type: string;
+  status?: string;
+  tags?: Record<string, unknown> | null;
+  initial_config?: Record<string, unknown> | null;
+}
+
+export interface AgentUpdate {
+  name?: string;
+  description?: string | null;
+  type?: string;
+  status?: string;
+  tags?: Record<string, unknown> | null;
+}
+
+export interface AgentVersionCreate {
+  version: string;
+  config: Record<string, unknown>;
+  changelog?: string | null;
+  created_by?: string | null;
+}
+
+export interface AgentTestRequest {
+  test_input: string;
+}
+
+export interface AgentTestResponse {
+  success: boolean;
+  response?: string | null;
+  error?: string | null;
+  config_valid?: boolean | null;
+  system_message_length?: number | null;
+}
+
+export interface AgentTemplate {
+  id: string;
+  name: string;
+  description: string | null;
+  category: string;
+  config: Record<string, unknown>;
+  is_public: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface GroupChatParticipant {
   id: string;
   group_chat_id: string;
